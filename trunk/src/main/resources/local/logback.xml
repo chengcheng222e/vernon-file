@@ -25,6 +25,7 @@
         </layout>
     </appender>
 
+    <!--DEBUG < INFO-->
     <logger name="com.vernon.file">
         <level value="DEBUG" />
         <appender-ref ref="stdout" />

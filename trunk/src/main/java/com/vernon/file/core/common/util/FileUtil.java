@@ -110,7 +110,7 @@ public class FileUtil {
     public static String getRelativePath(String baseName, String ext) {
         StringBuffer sBuffer = new StringBuffer();
         sBuffer.append(SEPARATOR);
-        sBuffer.append(baseName.substring(0, 4));
+        sBuffer.append(baseName.substring(0, 4));//前4位作为文件夹名字
         sBuffer.append(SEPARATOR);
         sBuffer.append(baseName);
         sBuffer.append("." + ext);

@@ -21,5 +21,15 @@ public class Main {
         HttpServer httpServer = new HttpServer();
         httpServer.start();
         LOGGER.info("--------------------------- httpServer start ---------------------------");
+
+
+        JettyRun jettyRun = new JettyRun();
+        try {
+            LOGGER.info(" ----------------------- jettyRun started --------------------------- ");
+            jettyRun.start();
+        } catch (Exception e) {
+            LOGGER.error("启动jetty失败", e);
+            System.exit(1);
+        }
     }
 }

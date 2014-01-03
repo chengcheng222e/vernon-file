@@ -19,10 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,40 +39,24 @@ public class HttpServiceHandler extends SimpleChannelHandler {
 
         final int operatorId = AppUtil.operatorIndex.incrementAndGet();
         LOGGER.info("{} ---------- messageReceived start ------------", operatorId);
-
         // ------------------------ 分析 request ------------------------
         HttpRequest httpRequest = (HttpRequest) e.getMessage();
         Channel channel = e.getChannel();
-
         LOGGER.info("1. {}, channelId={}, httpRequest.getUri()={}", operatorId, channel.getId(), httpRequest.getUri());
         // 获取查询条件
         QueryStringDecoder queryStringDecoder = new QueryStringDecoder(httpRequest.getUri(), UTF8);
-        String tmpPath = queryStringDecoder.getPath();
-        String path = URLDecoder.decode(tmpPath);
+        String path = URLDecoder.decode(queryStringDecoder.getPath(), "utf-8");
         LOGGER.debug("2. URLDecoder path={} ", path);
         // get 请求参数
         Map<String, List<String>> params = queryStringDecoder.getParameters();
         String baseName = FilenameUtils.getBaseName(path);
         String ext = FilenameUtils.getExtension(path);
         FileType fileType = FileUtil.getFileType(ext);
-        Context context = new Context();
+        int userId = 11241;
+        Context context = new Context(userId, operatorId, path, params, baseName, ext, channel);
         Action cmd = ActionFactory.getAction(fileType);
         cmd.handle(context);
-        LOGGER.info("ß", operatorId);
-    }
-
-    private Map<String, String> formatReqParam(Map<String, List<String>> reqParams) {
-        Map<String, String> bodyParams = new HashMap<String, String>();
-        if (reqParams != null) {
-            Set<String> keySet = reqParams.keySet();
-            for (String k : keySet) {
-                List<String> v = reqParams.get(k);
-                if (v != null && v.size() > 0) {
-                    bodyParams.put(k, v.get(0));
-                }
-            }
-        }
-        return bodyParams;
+        LOGGER.info("{} ---------- messageReceived end ------------", operatorId);
     }
 
 }
