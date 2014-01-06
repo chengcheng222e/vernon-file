@@ -16,10 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -177,20 +174,34 @@ public class HttpHelper {
      *
      * @param request
      * @return
+     * @deprecated
      */
     public static String getBodyString(HttpServletRequest request) {
         StringBuilder sb = new StringBuilder();
+        InputStream inputStream = null;
+        BufferedInputStream bufferedInput = null;
         try {
-            InputStream inputStream = request.getInputStream();
-            BufferedInputStream bufferedInput = new BufferedInputStream(inputStream);
+            inputStream = request.getInputStream();
+            bufferedInput = new BufferedInputStream(inputStream);
             byte[] buffer = new byte[1024];
             int bytesRead = 0;
             while ((bytesRead = bufferedInput.read(buffer)) != -1) {
                 String chunk = new String(buffer, 0, bytesRead);
                 sb.append(chunk);
+
             }
+            // 因为只能读一次,读了就没有了,为了后面的还能用,我们要调用reset();
+            //bufferedInput.reset();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (bufferedInput != null) {
+                try {
+                    bufferedInput.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return sb.toString();
     }

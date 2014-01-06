@@ -48,9 +48,7 @@ public class UploadServlet extends HttpServlet {
         String requestId = UUIDUtil.getUUID();
 
         String headerJson = HttpHelper.getHeaderJsonString(request);
-        String bodyJson = HttpHelper.getBodyString(request);
         LOGGER.info("UUID={},header={}", requestId, headerJson);
-        LOGGER.debug("UUID={},body={}", requestId,bodyJson);
         DiskFileUpload upload = new DiskFileUpload();
         upload.setSizeMax(MAX_SIZE);
         upload.setSizeThreshold(SIZETHRESHOLD);
@@ -63,10 +61,11 @@ public class UploadServlet extends HttpServlet {
             FileItem fileItem = null;
             while (iterator.hasNext()) {
                 FileItem item = (FileItem) iterator.next();
-                if (item.isFormField()) {// 文本
+                LOGGER.debug("fileName={}", item.getFieldName());
+                if (item.isFormField()) {//判断该表单项是否是普通类型
                     LOGGER.info("requestId={},表单参数名={},表单参数值={}", requestId, item.getFieldName(),
                             item.getString("UTF-8"));
-                } else {// 文件
+                } else {// 文件类型
                     fileItem = item;
                 }
             }

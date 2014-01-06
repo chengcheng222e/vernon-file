@@ -65,3 +65,10 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.2'
 }
 
+
+//Gathering all dependencies libraries JARs in one folder
+task copyToLib(type: Copy) {
+    from configurations.runtime
+    into "${buildDir}/deps"
+}
+
