@@ -1,12 +1,14 @@
 package com.vernon.file.core.common.util;
 
 import com.vernon.file.core.Config;
+import com.vernon.file.core.Constant;
 import com.vernon.file.core.FileType;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -115,6 +117,35 @@ public class FileUtil {
         sBuffer.append(baseName);
         sBuffer.append("." + ext);
         return sBuffer.toString();
+    }
+
+    /**
+     * 获取文件
+     *
+     * @param basename
+     * @param ext
+     * @return
+     */
+    public static File getSrcFile(String basename, String ext) {
+        String srcFileName = Constant.BASEPATH + FileUtil.getRelativePath(basename, ext);
+        return new File(srcFileName);
+    }
+
+
+    /**
+     * 生成文件名（不包括文件后辍）
+     *
+     * @param contentMd5
+     * @param ext
+     * @return
+     */
+    public static String buildFilename(String contentMd5, String ext) {
+        String key = contentMd5;
+        String basename = ShortUrlUtil.shortUrl(key);
+        while (getSrcFile(basename, ext).exists()) {
+            basename = ShortUrlUtil.shortUrl(key);
+        }
+        return basename;
     }
 }
 

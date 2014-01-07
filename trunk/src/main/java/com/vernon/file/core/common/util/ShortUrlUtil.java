@@ -3,7 +3,7 @@ package com.vernon.file.core.common.util;
 import com.vernon.file.core.common.encrypt.MD5Encrypt;
 
 /**
- * 短路径util类
+ * 短路径util类, 62的6次方中
  *
  * @author xionglie
  */
@@ -59,7 +59,13 @@ public class ShortUrlUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(shortUrl("http://www.baidu.com/"));
+        String str = "http://www.baidu.com";
+        String[] strs = shortText(str);
+        for (String s : strs) {
+            System.out.println("s = " + s);
+        }
+        str = strs[0];
+        System.out.println(str);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.vernon.file.core.web.action;
 
-import com.vernon.file.action.ImageAction;
-import com.vernon.file.action.NotAllowAction;
+import com.vernon.file.web.action.ImageAction;
+import com.vernon.file.web.action.NotAllowAction;
 import com.vernon.file.core.FileType;
 
 import java.util.HashMap;

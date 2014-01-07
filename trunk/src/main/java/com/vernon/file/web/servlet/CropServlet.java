@@ -1,4 +1,4 @@
-package com.vernon.file.servlet;
+package com.vernon.file.web.servlet;
 
 import javax.servlet.http.HttpServlet;
 

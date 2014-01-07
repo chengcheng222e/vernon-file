@@ -1,4 +1,4 @@
-package com.vernon.file.action;
+package com.vernon.file.web.action;
 
 import com.vernon.file.core.Constant;
 import com.vernon.file.core.common.util.FileUtil;

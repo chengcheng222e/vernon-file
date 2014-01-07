@@ -6,7 +6,7 @@
 
 	<servlet>
 		<servlet-name>upload</servlet-name>
-		<servlet-class>com.vernon.file.servlet.UploadServlet</servlet-class>
+		<servlet-class>com.vernon.file.web.servlet.UploadServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 

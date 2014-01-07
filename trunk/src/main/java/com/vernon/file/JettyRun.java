@@ -1,20 +1,13 @@
 package com.vernon.file;
 
 import com.vernon.file.core.Config;
-import com.vernon.file.servlet.CropServlet;
-import com.vernon.file.servlet.UploadServlet;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.ContextHandlerCollection;
 import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.thread.QueuedThreadPool;
-import org.mortbay.xml.XmlConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.FileInputStream;
 
 /**
  * Created with IntelliJ IDEA.

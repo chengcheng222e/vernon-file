@@ -1,8 +1,14 @@
 package com.vernon.file.core;
 
+import com.google.common.io.Files;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -43,6 +49,19 @@ public class AppUtil {
             ip = request.getRemoteAddr();
         }
         return ip;
+    }
+
+    /**
+     * 文件
+     *
+     * @param srcImageFile
+     * @return
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     */
+    public static String fileMD5(File srcImageFile) throws IOException, NoSuchAlgorithmException {
+        byte[] md5Bytes = Files.getDigest(srcImageFile, MessageDigest.getInstance("MD5"));
+        return new String(Hex.encodeHex(md5Bytes));
     }
 
 }

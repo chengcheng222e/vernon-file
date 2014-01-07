@@ -184,7 +184,7 @@ public class HttpHelper {
             inputStream = request.getInputStream();
             bufferedInput = new BufferedInputStream(inputStream);
             byte[] buffer = new byte[1024];
-            int bytesRead = 0;
+            int bytesRead = -1;
             while ((bytesRead = bufferedInput.read(buffer)) != -1) {
                 String chunk = new String(buffer, 0, bytesRead);
                 sb.append(chunk);

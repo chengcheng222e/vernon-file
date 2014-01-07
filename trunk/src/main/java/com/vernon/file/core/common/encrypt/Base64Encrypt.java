@@ -78,6 +78,10 @@ public class Base64Encrypt {
     }
 
     public static void main(String[] args) {
-
+        String str = "陈袁1111111111111";
+        str = encoder(str);
+        System.out.println("str = " + str);
+        str = decoder(str);
+        System.out.println("str = " + str);
     }
 }
