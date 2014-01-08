@@ -128,7 +128,11 @@ public class FileUtil {
      */
     public static File getSrcFile(String basename, String ext) {
         String srcFileName = Constant.BASEPATH + FileUtil.getRelativePath(basename, ext);
-        return new File(srcFileName);
+        File file = new File(srcFileName);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        return file;
     }
 
 

@@ -79,6 +79,9 @@ public class UploadServlet extends HttpServlet {
             }
             File temp = new File(fileItem.getName());
             File file = new File(Constant.BASEPATH + FileUtil.SEPARATOR + temp.getName());
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
             fileItem.write(file);
         } catch (FileUploadException e) {
             e.printStackTrace();

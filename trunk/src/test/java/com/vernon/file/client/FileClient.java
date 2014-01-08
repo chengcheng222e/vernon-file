@@ -1,5 +1,8 @@
 package com.vernon.file.client;
 
+import com.vernon.file.core.common.util.JsonUtil;
+import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -46,7 +49,6 @@ public class FileClient {
     private int picHeight = 0;
     private String fileExt = null;
     private String responseText = null;
-
 
 
     // -------------------------- constructor methods ----------------------------
@@ -166,8 +168,7 @@ public class FileClient {
             while ((temp = is.read(data)) != -1) {
                 os.write(data, 0, temp);
             }
-            //return parseText(conn);
-            return true;
+            return parseText(conn);
         } catch (IOException e) {
             if (debug) {
                 e.printStackTrace();
@@ -237,6 +238,7 @@ public class FileClient {
 
     /**
      * 获取 GMT 格式时间戳
+     *
      * @return GMT 格式时间戳
      */
     private String getGMTDate() {
@@ -249,7 +251,7 @@ public class FileClient {
      * 计算签名
      *
      * @param conn 连接
-     * @param uri 请求地址
+     * @param uri  请求地址
      * @return 签名字符串
      */
     private String sign(HttpURLConnection conn, String uri) {
@@ -271,6 +273,37 @@ public class FileClient {
             System.out.println("sign = " + sign.toString());
         }
         return "dianziq " + accessKeyId + ":" + MD5Encrypt.encoderForString(sign.toString());
+    }
+
+
+    /**
+     * 获得连接请求的返回数据
+     *
+     * @param conn
+     * @return 字符串
+     */
+    private boolean parseText(HttpURLConnection conn) throws IOException {
+        int code = conn.getResponseCode();
+        if (HttpResponseStatus.OK.getCode() == code) {
+            InputStream in = conn.getInputStream();
+            byte[] buffer = new byte[512];
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            int count = -1;
+            while ((count = in.read(buffer)) != -1) {
+                outStream.write(buffer, 0, count);
+            }
+            this.responseText = new String(outStream.toByteArray(), "UTF-8");
+
+            Response response = (Response) JsonUtil.json2Object(this.responseText, Response.class);
+            if (response != null) {
+                this.filename = response.getFilename();
+                this.fileExt = response.getFileExt();
+                this.picWidth = response.getPicWidth();
+                this.picHeight = response.getPicHeight();
+            }
+            return true;
+        }
+        return false;
     }
 
     // -------------------------- setter / getter methods ----------------------------
