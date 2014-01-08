@@ -41,7 +41,7 @@ public class UploadServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendError(404);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND,"Not Found");
     }
 
     @Override
@@ -115,7 +115,7 @@ public class UploadServlet extends HttpServlet {
         // TODO 校验请求合法性
         if (StringUtils.isBlank(date)) {
             LOGGER.debug("UUID = {}, Need Date Header", requestId);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "缺少时间");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Need Date Header");
             return;
         }
 
@@ -123,7 +123,7 @@ public class UploadServlet extends HttpServlet {
         String ext = FileUtil.getExtension(URI);
         if (StringUtils.isBlank(ext) || !FileUtil.isArrowFileType(ext)) {
             LOGGER.debug("UUID = {}, 不支持该文件类型:{}", requestId, ext);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "不支持该文件类型");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Not Support The File Type");
             return;
         }
 
@@ -152,11 +152,11 @@ public class UploadServlet extends HttpServlet {
             bufferedos.flush();
         } catch (FileNotFoundException e) {
             LOGGER.error("FileNotFoundException", e);
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "没有找到文件");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Not Found");
             return;
         } catch (IOException e) {
             LOGGER.error("UUID = {}, 上传文件失败.", requestId);
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "文件上传失败");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Upload Failed");
             return;
         } finally {
             if (in != null) {
@@ -177,12 +177,12 @@ public class UploadServlet extends HttpServlet {
             LOGGER.debug("UUID = {}, end md5hex = {}", requestId, md5hex);
             if (!contentMD5.equals(md5hex)) {
                 LOGGER.debug("{} contentMd5不正确", requestId);
-                response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "文件被改动");
+                response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "The File Is Changed");
                 return;
             }
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error(requestId + "NoSuchAlgorithmException ", e);
-            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "文件上传失败");
+            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "Upload Failed");
             return;
         }
 
