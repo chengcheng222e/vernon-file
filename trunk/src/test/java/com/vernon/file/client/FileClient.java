@@ -162,12 +162,14 @@ public class FileClient {
                 }
             }
             conn.connect();
+
             os = conn.getOutputStream();
             byte[] data = new byte[1024];
             int temp = -1;
             while ((temp = is.read(data)) != -1) {
                 os.write(data, 0, temp);
             }
+            os.flush();
             return parseText(conn);
         } catch (IOException e) {
             if (debug) {

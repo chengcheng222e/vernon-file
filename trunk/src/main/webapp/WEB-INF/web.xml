@@ -12,7 +12,7 @@
 
 	<servlet-mapping>
 		<servlet-name>upload</servlet-name>
-		<url-pattern>/upload</url-pattern>
+		<url-pattern>/upload/*</url-pattern>
 	</servlet-mapping>
 
 	<session-config>
