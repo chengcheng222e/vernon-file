@@ -41,7 +41,7 @@ public class ClientTest {
         initFileClient();
         File file = new File(SAMPLE_PIC_FILE);
         dzqClient.setContentMD5(FileUtil.fileMD5(file));
-        dzqClient.setUserId("25551");
+        dzqClient.setUserId("255511");
         dzqClient.setObjectType("user");
         dzqClient.setObjectId("25551");
         Map<String, String> params = new HashMap<String, String>();

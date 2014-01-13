@@ -1,5 +1,8 @@
 package com.vernon.file.core;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 /**
  * Created with IntelliJ IDEA.
  * User: chenyuan
@@ -13,5 +16,18 @@ public class Constant {
     public final static String THUMBNAILPATH = Config.INSTANCE.get("thumbnailPath");
     public final static String TMPDIR = Config.INSTANCE.get("tmpDir");
 
+    public static String IM4JAVATOOPATH = "";
 
+    static {
+        IM4JAVATOOPATH = Config.INSTANCE.get("IM4JAVA_TOOLPATH");
+        try {
+            IM4JAVATOOPATH = URLDecoder.decode(IM4JAVATOOPATH, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("IM4JAVATOOPATH: " + IM4JAVATOOPATH);
+    }
 }

@@ -151,5 +151,23 @@ public class FileUtil {
         }
         return basename;
     }
+
+    /**
+     * 根据URI获取文件
+     *
+     * @param URI
+     * @return
+     */
+    public static File getSrcFile(String URI) {
+        int index = URI.lastIndexOf("/");
+        String filename = URI.substring(index + 1);
+        int dotIndex = filename.lastIndexOf(".");
+        if (filename.length() < 4) { // 因为文件夹名字是取的basename前4位
+            return null;
+        }
+        String basename = filename.substring(0, dotIndex);
+        String ext = filename.substring(dotIndex + 1);
+        return FileUtil.getSrcFile(basename, ext);
+    }
 }
 

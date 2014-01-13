@@ -85,4 +85,10 @@ public class TestCase {
         }
 
     }
+
+    @Test
+    public void testString1(){
+        String fileType = "jpg,bmp";
+        System.out.println(fileType.contains(null));
+    }
 }

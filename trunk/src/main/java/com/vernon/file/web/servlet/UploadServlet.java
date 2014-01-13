@@ -97,7 +97,7 @@ public class UploadServlet extends HttpServlet {
         String requestId = UUIDUtil.getUUID();
         String IP = AppUtil.getIpAddr(request);
         String URI = request.getRequestURI();
-        LOGGER.debug("UUID = {} , start doPut() IP={}", requestId, IP);
+        LOGGER.debug("UUID = {} , UploadServlet  doPut() start, IP={}", requestId, IP);
         LOGGER.debug("UUID = {} , URI = {}", requestId, URI);
         String headerJson = HttpHelper.getHeaderJsonString(request);
         LOGGER.info("UUID = {}, header={}", requestId, headerJson);

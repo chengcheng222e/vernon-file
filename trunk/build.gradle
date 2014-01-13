@@ -67,6 +67,7 @@ dependencies {
 
     // ------------------------------ other ------------------------
     compile 'com.google.guava:guava:11.0.2'
+    compile 'org.im4java:im4java:1.4.0'
 }
 
 

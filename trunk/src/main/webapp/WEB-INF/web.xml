@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+    <!--文件上传-->
 	<servlet>
 		<servlet-name>upload</servlet-name>
 		<servlet-class>com.vernon.file.web.servlet.UploadServlet</servlet-class>
@@ -14,6 +15,18 @@
 		<servlet-name>upload</servlet-name>
 		<url-pattern>/upload/*</url-pattern>
 	</servlet-mapping>
+
+    <!--文件裁剪-->
+    <servlet>
+        <servlet-name>crop</servlet-name>
+        <servlet-class>com.vernon.file.web.servlet.CropServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>crop</servlet-name>
+        <url-pattern>/crop/*</url-pattern>
+    </servlet-mapping>
 
 	<session-config>
 		<session-timeout>30</session-timeout>
