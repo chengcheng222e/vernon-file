@@ -5,39 +5,83 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <!--********************************************** CSS **********************************************************-->
     <link rel="stylesheet" type="text/css" href="plugins/uploadify/uploadify.css">
-    <link rel="stylesheet" type="text/css" href="plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="plugins/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="plugins/bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+
     <!--********************************************** JAVASCRIPT ***************************************************-->
     <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
     <script type="text/javascript" src="plugins/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="plugins/uploadify/jquery.uploadify.min.js"></script>
 </head>
 <body>
-<div class="container">
-    ====================== 文件上传 ==================
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <textarea class="form-control" rows="3"></textarea>
-        <input type="file" name="file_upload" id="file_upload" />
-        <!--<button type="button" name="uploadify" id="uploadify" class="btn btn-default" title="上传图片" data-type="share">-->
-            <!--<span class="glyphicon glyphicon-picture"></span>-->
-        <!--</button>-->
-    </form>
-</div>
-<script type="text/javascript">
-    $(function () {
-        $('#file_upload').uploadify({
-            'auto': false,
-            'swf': 'plugins/uploadify/uploadify.swf',
-            'uploader': 'http://localhost:8867/upload',
-            //'buttonImage' : 'image/icon/image_add.png',
-            //'buttonClass' : 'btn btn-default',
-            'buttonText': 'ADD',
-            'buttonCursor': 'hander',
-            'buttonClass': 'some-class',
-            'width': 60,
-            'fileTypeDesc' : 'Any old file you want...'
+    <div class="container">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <textarea class="form-control" rows="3"></textarea><br/>
+            <a href="javascript:;" class="btn btn-lg btn-danger"
+               id="element"
+               data-toggle="popover"
+               title=""
+               data-content=""
+               role="button"
+               data-original-title="">popover</a>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            var options = {
+                'html': true,
+                'title': '<input type="file" name="file-upload" id="file-upload" />',
+                'content': '<ul id="upload-file-queue"></ul>',
+                'placement': 'bottom',
+                //'delay': { show: 300, hide: 100 },
+                'trigger':'click'
+            };
+            $('#element').popover(options).click(function(){
+                $('#file-upload').uploadify({
+                    'auto':true,
+                    'buttonClass':'some-class',
+                    'buttonCursor':'hander',
+                    //'buttonImage':'image/icon/image_add.png',
+                    'buttonText':'ADD',
+                    //'checkExisting':
+                    //'debug':
+                    //'fileObjName':
+                    'fileSizeLimit':'5000KB',
+                    //'fileTypeDesc':
+                    'fileTypeExts':'*.bmp;*.jpg;*.x-png;*.gif;,*.jpeg;*.png',
+                    'formData': {'userId': 11241, 'userName': 'chenyuan'},
+                    'height':40,
+                    'itemTemplate':'<li id="${fileID}" class="uploadify-queue-item">\
+                                        <div class="cancel">\
+                                            <a href="javascript:$(\'#${instanceID}\').uploadify(\'cancel\', \'${fileID}\')">X</a>\
+                                        </div>\
+                                        <span class="fileName">${fileName} ---(${fileSize})</span><span class="data"></span>\
+                                    </li>',
+                    'method':'POST',
+                    //'multi':
+                    //'overrideEvents':
+                    //'preventCaching':
+                    //'progressData':
+                    'queueID':'upload-file-queue',
+                    //'queueSizeLimit':
+                    'removeCompleted': false,
+                    //'removeTimeout':
+                    //'requeueErrors':
+                    //'successTimeout':
+                    'swf':'plugins/uploadify/uploadify.swf',
+                    'uploader':'http://localhost:8867/upload',
+                    //'uploadLimit':
+                    'width':60,
+                    'onUploadComplete' : function(file) {
+                        alert('The file ' + file.name + ' finished processing.');
+                    }
+                });
+            });
+
         });
-    });
-</script>
+
+    </script>
 </body>
 </html>
