@@ -11,14 +11,17 @@ import org.im4java.core.IMOperation;
 import org.im4java.core.IdentifyCmd;
 import org.im4java.process.ArrayListOutputConsumer;
 import org.im4java.process.ProcessStarter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Im4javaUtil {
+public class Im4javaImgUtil {
 
     public final static Character RESIZE_SPECIAL_STRETCH = '!';
     public final static String EXT_GIF = "gif"; // gif文件后辍名
+    private static Logger logger = LoggerFactory.getLogger(Im4javaImgUtil.class);
 
     static {
         ProcessStarter.setGlobalSearchPath(Constant.IM4JAVATOOPATH);
@@ -114,6 +117,7 @@ public class Im4javaUtil {
      * @param height  缩放后的图片高度
      * @param srcPath 源图片路径
      * @param newPath 缩放后图片的路径
+     * @param special
      */
     public static void zoomImage(Integer width, Integer height, String srcPath, String newPath, Character special)
             throws Exception {
@@ -374,24 +378,45 @@ public class Im4javaUtil {
 
 
     public static void main(String[] args) throws Exception {
-        String jpeg01 = "E:/Picture/psb.jpg";
-        String jpegTmp = "E:/Picture/tmp.jpg";
-        cutImage(jpeg01, jpegTmp, 0, 0, 100, 100);
-//        String png01 = "/Users/xionglie/IdeaProjects/fileServer/src/test/resources/img/png/p1.png";
-//        String png02 = "/Users/xionglie/IdeaProjects/fileServer/src/test/resources/img/png/p2.png";
-//
-//        String gif01 = "/Users/xionglie/IdeaProjects/fileServer/src/test/resources/img/jpeg/big.jpeg";
-//
-//        zoomImage(jpeg01, "/tmp/test/jpeg.jpeg", "50x50");
-//        zoomImage(png01, "/tmp/test/png01.png", "50x50");
-//        zoomImage(png02, "/tmp/test/png02.png", "50x50");
-//
-//        // zoomImageOld(gif01,"/tmp/test/old-jgif.jpeg","50x50");
-//        zoomImage(gif01, "/tmp/test/jgif.jpeg", "50x50");
-        //resizeAndCrop("/Users/xionglie/Desktop/t02.gif", "/Users/xionglie/Desktop/new.gif", 200, 200);
-        //zoomLongImage("/Users/xionglie/Desktop/test001.gif", "/Users/xionglie/Desktop/t001_out.gif", 160, 120);
-//        fillWhiteImage("/Users/xionglie/Desktop/test002.jpg", "/Users/xionglie/Desktop/new.jpg", 600, 600);
-        //zoomLongImage("/Users/xionglie/Desktop/EBzaeu2.png", "/Users/xionglie/Desktop/EBzaeu2_1.png", 160, 120);
+
+        String parentPath = "/Users/chenyuan/Pictures/";
+        String toParentPath = parentPath + "ImageMagickTest/";
+
+        logger.info("=========== im4javaimg start !!! ===========");
+
+        // 等比例
+        String jpeg001 = parentPath + "100x100.jpg";
+        // 宽>高
+        String jpeg002 = parentPath + "98D36001B9F080914C298CEA541A0076.jpg";
+        // 高>宽
+        String jpeg003 = parentPath + "6007BEDC746ACB8D011C7D24F5659E6B.jpg";
+
+        // 长图
+        String longpic = parentPath + "longpic.jpg";
+
+        String jpeg001Temp = toParentPath + "temp.jpg";
+        // 裁剪静态图片
+        // cutImage(jpeg001, jpeg001Temp, 0, 0, 500, 500);
+
+        // 裁剪动态图片
+        String gif001 = parentPath + "GIF/fatboy.gif";
+        String gif001Temp = toParentPath + "giftemp.gif";
+        // cutImage(gif001, gif001Temp, 0, 0, 50, 50);
+
+        // 缩放图片
+        // zoomImage(jpeg001, toParentPath + "zoomjpeg1.jpg", "50x50"); // 等比例
+        // zoomImage(jpeg002, toParentPath + "zoomjpeg2.jpg", "200x200");// 宽>高, 以宽来算
+        // zoomImage(jpeg003, toParentPath + "zoomjpeg3.jpg", "50x50"); // 高>宽, 以高来算
+
+        //resizeAndCrop(jpeg002, toParentPath + "resize-andcrop.jpg", 200, 200);
+
+        // 现在处理是裁剪掉
+        //zoomLongImage(longpic, toParentPath + "longpic_out.gif", 160, 120);
+
+        // 填白
+        //fillWhiteImage(jpeg001, toParentPath + "white.jpg", 600, 600);
+
+        logger.info("=========== im4javaimg end !!! ===========");
     }
 
 }

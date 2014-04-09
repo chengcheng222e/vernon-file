@@ -7,11 +7,13 @@ import com.vernon.file.core.common.http.HttpHeaders;
 import com.vernon.file.core.common.http.HttpHelper;
 import com.vernon.file.core.common.http.HttpParams;
 import com.vernon.file.core.common.util.FileUtil;
+import com.vernon.file.core.common.util.Im4javaImgUtil;
 import com.vernon.file.core.common.util.UUIDUtil;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.lang.StringUtils;
+import org.im4java.core.IM4JavaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,7 +112,7 @@ public class UploadServlet extends HttpServlet {
         String userId = HttpHelper.getHeader(request, HttpParams.X_DZQ_UID);
         String lid = HttpHelper.getHeader(request, HttpParams.X_DZQ_LID);
         String objectType = HttpHelper.getHeader(request, HttpParams.X_DZQ_OBJTYPE);
-        String objectId = HttpHelper.getHeader(request, HttpParams.X_DZQ_OBJID);
+        String cropParam = HttpHelper.getHeader(request, HttpParams.X_GMKERL_CROP);
 
         // TODO 校验请求合法性
         if (StringUtils.isBlank(date)) {
@@ -193,7 +195,36 @@ public class UploadServlet extends HttpServlet {
         LOGGER.debug("UUID = {}, tmpFile= {}", requestId, tmpFile.getAbsolutePath());
         String toImgPath = srcImageFile.getAbsolutePath();
         LOGGER.debug("UUID = {}, srcImageFile={}", requestId, toImgPath);
-        Files.move(tmpFile, srcImageFile);
-        boolean sendOk = true;
+
+        LOGGER.debug("UUID = {}, http HttpParams.X_GMKERL_CROP ={}", requestId, cropParam);
+        boolean saveOk = false;
+
+        if (StringUtils.isBlank(cropParam)) {
+            Files.move(tmpFile, srcImageFile);
+            saveOk = true;
+        }
+        // 裁剪
+        else {
+            String[] strings = cropParam.split(",");
+            if (strings != null && strings.length >= 4) {
+                int x = Integer.valueOf(strings[0]);
+                int y = Integer.valueOf(strings[1]);
+                int width = Integer.valueOf(strings[2]);
+                int height = Integer.valueOf(strings[3]);
+                try {
+                    Im4javaImgUtil.cutImage(tmpFile.getAbsolutePath(), toImgPath, x, y, width, height);
+                    saveOk = true;
+                } catch (InterruptedException e) {
+                    LOGGER.error("UUID={}, 图片裁剪出错. {}", requestId, e);
+                } catch (IM4JavaException e) {
+                    LOGGER.error("UUID={}, 图片裁剪出错. {}", requestId, e);
+                }
+            }
+        }
+
+        if (saveOk) {
+            //TODO 记录表中
+        }
+
     }
 }

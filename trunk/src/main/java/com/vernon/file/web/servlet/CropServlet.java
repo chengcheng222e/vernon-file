@@ -55,7 +55,6 @@ public class CropServlet extends HttpServlet{
         String userId = HttpHelper.getHeader(request, HttpParams.X_DZQ_UID);
         String lid = HttpHelper.getHeader(request, HttpParams.X_DZQ_LID);
         String objectType = HttpHelper.getHeader(request, HttpParams.X_DZQ_OBJTYPE);
-        String objectId = HttpHelper.getHeader(request, HttpParams.X_DZQ_OBJID);
         String cropParam = HttpHelper.getHeader(request, HttpParams.X_GMKERL_CROP);
         String cropPageSizeParam = HttpHelper.getHeader(request, HttpParams.X_GMKERL_CROP_PAGE_SIZE);
 

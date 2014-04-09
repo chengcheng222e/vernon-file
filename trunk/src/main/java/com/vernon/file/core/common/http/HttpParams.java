@@ -18,7 +18,6 @@ public class HttpParams {
     public final static String X_GMKERL_CROP_PAGE_SIZE = "x-gmkerl-crop-page-size";
 
     public final static String X_DZQ_OBJTYPE = "x-dzq-objtype";
-    public final static String X_DZQ_OBJID = "x-dzq-objid";
 
     // 如果在原缩略图版本或裁剪图设置的基础上进行调整,也可使用以下参数
     public final static String X_GMKERL_TYPE = "x-gmkerl-type";
