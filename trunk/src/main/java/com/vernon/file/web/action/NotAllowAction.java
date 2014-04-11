@@ -13,6 +13,6 @@ import com.vernon.file.core.Context;
 public class NotAllowAction implements Action {
     @Override
     public void handle(Context context) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 }
