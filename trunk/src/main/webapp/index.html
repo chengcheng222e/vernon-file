@@ -4,7 +4,6 @@
     <title>文件上传</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <!--********************************************** CSS **********************************************************-->
-    <link rel="stylesheet" type="text/css" href="/man/plugins/uploadify/uploadify.css">
     <link rel="stylesheet" type="text/css" href="/man/plugins/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/man/plugins/bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" type="text/css" href="/man/css/app.css">
@@ -12,76 +11,23 @@
     <!--********************************************** JAVASCRIPT ***************************************************-->
     <script type="text/javascript" src="/man/js/jquery-1.8.3.js"></script>
     <script type="text/javascript" src="/man/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/man/plugins/uploadify/jquery.uploadify.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <textarea class="form-control" rows="3"></textarea><br/>
-            <a href="javascript:;" class="btn btn-lg btn-danger"
-               id="element"
-               data-toggle="popover"
-               title=""
-               data-content=""
-               role="button"
-               data-original-title="">popover</a>
-        </form>
+        <div class="row">
+
+            <form role="form" method="put" action="/upload" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="文字">
+                </div>
+                <div class="form-group">
+                    <input type="file" class="form-control" >
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+
+        </div>
     </div>
 
-    <script type="text/javascript">
-        $(function () {
-            var options = {
-                'html': true,
-                'title': '<input type="file" name="file-upload" id="file-upload" />',
-                'content': '<ul id="upload-file-queue"></ul>',
-                'placement': 'bottom',
-                //'delay': { show: 300, hide: 100 },
-                'trigger':'click'
-            };
-            $('#element').popover(options).click(function(){
-                $('#file-upload').uploadify({
-                    'auto':true,
-                    'buttonClass':'some-class',
-                    'buttonCursor':'hander',
-                    //'buttonImage':'image/icon/image_add.png',
-                    'buttonText':'ADD',
-                    //'checkExisting':
-                    //'debug':
-                    //'fileObjName':
-                    'fileSizeLimit':'5000KB',
-                    //'fileTypeDesc':
-                    'fileTypeExts':'*.bmp;*.jpg;*.x-png;*.gif;,*.jpeg;*.png',
-                    'formData': {'userId': 11241, 'userName': 'chenyuan'},
-                    'height':40,
-                    'itemTemplate':'<li id="${fileID}" class="uploadify-queue-item">\
-                                        <div class="cancel">\
-                                            <a href="javascript:$(\'#${instanceID}\').uploadify(\'cancel\', \'${fileID}\')">X</a>\
-                                        </div>\
-                                        <span class="fileName">${fileName} ---(${fileSize})</span><span class="data"></span>\
-                                    </li>',
-                    'method':'POST',
-                    //'multi':
-                    //'overrideEvents':
-                    //'preventCaching':
-                    //'progressData':
-                    'queueID':'upload-file-queue',
-                    //'queueSizeLimit':
-                    'removeCompleted': false,
-                    //'removeTimeout':
-                    //'requeueErrors':
-                    //'successTimeout':
-                    'swf':'/man/plugins/uploadify/uploadify.swf',
-                    'uploader':'http://localhost:8867/upload',
-                    //'uploadLimit':
-                    'width':60,
-                    'onUploadComplete' : function(file) {
-                        alert('The file ' + file.name + ' finished processing.');
-                    }
-                });
-            });
-
-        });
-
-    </script>
 </body>
 </html>
