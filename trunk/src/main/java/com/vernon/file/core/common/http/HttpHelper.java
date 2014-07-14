@@ -5,9 +5,8 @@ import com.vernon.file.core.common.util.JsonUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
+import org.jboss.netty.channel.*;
 import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
@@ -204,6 +203,32 @@ public class HttpHelper {
             }
         }
         return sb.toString();
+    }
+
+    public static void serveStatic(Channel ch, File file) {
+        try {
+            RandomAccessFile raf = new RandomAccessFile(file, "r"); // 只读
+            DefaultHttpResponse resp = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+            resp.setHeader(HttpHeaders.Names.CONTENT_TYPE, getContentType(file));
+            long fileLength = raf.length();
+            resp.setHeader(HttpHeaders.Names.CONTENT_LENGTH, fileLength);
+            ch.write(resp);
+            final FileRegion region = new DefaultFileRegion(raf.getChannel(),
+                    0, fileLength);
+            ch.write(region).addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future)
+                        throws Exception {
+                    region.releaseExternalResources();
+                    future.getChannel().close();
+                }
+            });
+        } catch (Exception e) {
+            LOGGER.error("serveStatic", e);
+            if (ch.isConnected()) {
+                sendError(ch, HttpResponseStatus.NOT_FOUND);
+            }
+        }
     }
 
 }
