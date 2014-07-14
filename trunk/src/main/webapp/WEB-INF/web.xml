@@ -11,21 +11,9 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
-	<servlet-mapping>
-		<servlet-name>upload</servlet-name>
-		<url-pattern>/upload/*</url-pattern>
-	</servlet-mapping>
-
-    <!--文件裁剪-->
-    <servlet>
-        <servlet-name>crop</servlet-name>
-        <servlet-class>com.vernon.file.web.servlet.CropServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
     <servlet-mapping>
-        <servlet-name>crop</servlet-name>
-        <url-pattern>/crop/*</url-pattern>
+        <servlet-name>upload</servlet-name>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
 	<session-config>

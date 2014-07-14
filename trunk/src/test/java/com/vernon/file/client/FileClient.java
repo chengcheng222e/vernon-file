@@ -2,6 +2,8 @@ package com.vernon.file.client;
 
 import com.vernon.file.core.common.util.JsonUtil;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -22,7 +24,7 @@ import java.util.TimeZone;
 public class FileClient {
 
     // ------------------------------- field names -------------------------------
-
+    private Logger logger = LoggerFactory.getLogger(FileClient.class);
     private static final String UTF8 = "UTF-8";
     private static final char EXTENSION_SEPARATOR = '.';
     private static final char UNIX_SEPARATOR = '/';
@@ -274,9 +276,8 @@ public class FileClient {
         if (debug) {
             System.out.println("sign = " + sign.toString());
         }
-        return "dianziq " + accessKeyId + ":" + MD5Encrypt.encoderForString(sign.toString());
+        return "yrxf " + accessKeyId + ":" + MD5Encrypt.encoderForString(sign.toString());
     }
-
 
     /**
      * 获得连接请求的返回数据
@@ -305,6 +306,7 @@ public class FileClient {
             }
             return true;
         }
+        logger.info("code = {}, message={}", code, conn.getResponseMessage());
         return false;
     }
 

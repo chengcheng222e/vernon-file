@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class ClientTest {
     private static Logger logger = LoggerFactory.getLogger(ClientTest.class);
-    private static final String apiDomain = "localhost:8867/upload";
+    private static final String apiDomain = "localhost:8867";
     protected static final String accessKeyId = "lodawd98232";
     protected static final String secretAccessKey = "2313sd32131231321";
     private static final String SAMPLE_PIC_FILE = "/Users/chenyuan/Pictures/myself.jpg";
@@ -44,9 +44,9 @@ public class ClientTest {
         initFileClient();
         File file = new File(SAMPLE_PIC_FILE);
         dzqClient.setContentMD5(FileUtil.fileMD5(file));
-        dzqClient.setUserId("255511");
+        dzqClient.setUserId("11241");
         dzqClient.setObjectType(Product.User.getValue());
-        dzqClient.setObjectId("25551");
+        dzqClient.setObjectId("11241");
         Map<String, String> params = new HashMap<String, String>();
         boolean isOk = dzqClient.writeFile(file);
         if (isOk) {
