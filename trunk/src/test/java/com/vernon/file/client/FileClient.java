@@ -301,8 +301,8 @@ public class FileClient {
             if (response != null) {
                 this.filename = response.getFilename();
                 this.fileExt = response.getFileExt();
-                this.picWidth = response.getPicWidth();
-                this.picHeight = response.getPicHeight();
+                this.picWidth = response.getWidth();
+                this.picHeight = response.getHeight();
             }
             return true;
         }

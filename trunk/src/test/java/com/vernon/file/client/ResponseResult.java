@@ -12,11 +12,13 @@ public class ResponseResult {
     // ------------------------------------------- FIELD NAMES -----------------------------------------
 
     private String filename = null;
-    private int picWidth = 0;
-    private int picHeight = 0;
+    private int width = 0;
+    private int height = 0;
     private String fileExt = null;
+    private String fileType;
 
     // --------------------------------------  SETTE / GETTER METHODS ----------------------------------
+
 
     public String getFilename() {
         return filename;
@@ -26,20 +28,20 @@ public class ResponseResult {
         this.filename = filename;
     }
 
-    public int getPicWidth() {
-        return picWidth;
+    public int getWidth() {
+        return width;
     }
 
-    public void setPicWidth(int picWidth) {
-        this.picWidth = picWidth;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public int getPicHeight() {
-        return picHeight;
+    public int getHeight() {
+        return height;
     }
 
-    public void setPicHeight(int picHeight) {
-        this.picHeight = picHeight;
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public String getFileExt() {
@@ -50,13 +52,22 @@ public class ResponseResult {
         this.fileExt = fileExt;
     }
 
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
     @Override
     public String toString() {
         return "ResponseResult{" +
                 "filename='" + filename + '\'' +
-                ", picWidth=" + picWidth +
-                ", picHeight=" + picHeight +
+                ", width=" + width +
+                ", height=" + height +
                 ", fileExt='" + fileExt + '\'' +
+                ", fileType='" + fileType + '\'' +
                 '}';
     }
 }
