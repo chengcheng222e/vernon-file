@@ -1,82 +1,79 @@
-apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'idea'
+//apply plugin: 'war'
+apply plugin: 'java'
 apply plugin: 'jetty'
-
-jettyRun {
-    httpPort = 8033
-    stopPort = 8034
-    contextPath = '/'
-    //webXml = "${project.webAppDir}/WEB-INF/web.xml"
-}
+apply plugin: 'idea'
 
 compileJava.options.encoding = 'UTF-8'
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+group = 'com.dianziq.fileserver'
 version = "1.0"
+
+jar.baseName = 'fileserver'
 
 // gradle war -Denv=local
 def env = System.getProperty("env")?:"local"
 
+//jettyRun.contextPath = '/'
+//jettyRun.httpPort = 8861
+
+
 repositories {
     mavenCentral()
+    //flatDir dirs: "lib"
+}
+
+defaultTasks 'runMsgServer'
+
+dependencies {
+    providedCompile 'javax.servlet:jsp-api:2.0'
+    providedCompile 'javax.servlet:servlet-api:2.5'
+
+    compile 'org.mortbay.jetty:jetty:6.1.26'
+    compile 'commons-httpclient:commons-httpclient:3.1'
+
+    //compile fileTree(dir: 'lib', includes: ['*.jar'])
+
+    compile 'commons-fileupload:commons-fileupload:1.0'
+    compile 'commons-io:commons-io:2.4'
+    compile "net.sf.json-lib:json-lib:2.3:jdk13"
+    compile 'net.sf.ezmorph:ezmorph:1.0.6'
+    compile 'commons-beanutils:commons-beanutils:1.8.3'
+    compile "mysql:mysql-connector-java:5.1.11"
+    compile 'commons-dbutils:commons-dbutils:1.5'
+    compile "commons-dbcp:commons-dbcp:1.2.2"
+
+    compile "org.slf4j:slf4j-api:1.7.4"
+    compile "commons-collections:commons-collections:3.2.1"
+    compile "commons-lang:commons-lang:2.6"
+    compile 'commons-codec:commons-codec:1.7'
+    compile 'org.im4java:im4java:1.4.0'
+    compile 'io.netty:netty:3.5.3.Final'
+    compile 'com.google.guava:guava:14.0'
+    compile "ch.qos.logback:logback-classic:1.0.11"
+    compile "ch.qos.logback:logback-core:1.0.11"
+
+    testCompile "junit:junit:4.8.2"
+
 }
 
 sourceSets {
     main {
         resources {
-            exclude "src/main/resources"
+            exclude 'src/main/resources'
             srcDirs = ["src/main/resources/public","src/main/resources/$env"]
         }
     }
 }
 
-
-dependencies {
-
-    compile 'javax.servlet:jsp-api:2.0'
-    compile 'javax.servlet:servlet-api:2.5'
-    compile "junit:junit:4.8.2"
-
-    // ------------------------------ netty --------------------------
-    compile 'org.jboss.netty:netty:3.2.9.Final'
-    compile 'org.mortbay.jetty:jetty:6.1.26'
-
-    // ---------------------------- commons --------------------------
-    compile 'commons-lang:commons-lang:2.6'
-    compile 'commons-io:commons-io:2.4'
-    compile 'commons-fileupload:commons-fileupload:1.0'
-    compile 'commons-beanutils:commons-beanutils:1.8.3'
-    compile 'commons-codec:commons-codec:1.7'
-    compile "commons-dbcp:commons-dbcp:1.2.2"
-    compile "commons-dbutils:commons-dbutils:1.5"
-
-    // ----------------------------- logback -------------------------
-    compile "log4j:log4j:1.2.16"
-    compile "org.slf4j:slf4j-api:1.7.4"
-    compile "ch.qos.logback:logback-classic:1.0.11"
-    compile "ch.qos.logback:logback-core:1.0.11"
-    compile "ch.qos.logback:logback-access:1.0.11"
-
-
-    // --------------------------- datasource ------------------------
-    compile 'mysql:mysql-connector-java:5.1.11'
-
-    // ----------------------------- persist -------------------------
-    compile 'org.mybatis:mybatis:3.2.0'
-
-    // ------------------------------ jackson ------------------------
-    compile 'com.fasterxml.jackson.core:jackson-core:2.2.2'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.2.2'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.2'
-
-    // ------------------------------ other ------------------------
-    compile 'com.google.guava:guava:11.0.2'
-    compile 'org.im4java:im4java:1.4.0'
+task(runMsgServer, dependsOn: 'classes', type: JavaExec) {
+    main = 'com.dianziq.fileserver.Main'
+    classpath = sourceSets.main.runtimeClasspath
 }
-
 
 //Gathering all dependencies libraries JARs in one folder
 task copyToLib(type: Copy) {
     from configurations.runtime
     into "${buildDir}/deps"
 }
-

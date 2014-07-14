@@ -42,6 +42,16 @@ public class Context {
         this.channel = channel;
     }
 
+    public Context(Channel channel, Map<String, List<String>> params,
+                   String baseName, String ext, String path) {
+        super();
+        this.channel = channel;
+        this.params = params;
+        this.baseName = baseName;
+        this.ext = ext;
+        this.path = path;
+    }
+
     // ------------------------------ setter / getter methods ----------------------------------
 
     public Integer getOperatorId() {
