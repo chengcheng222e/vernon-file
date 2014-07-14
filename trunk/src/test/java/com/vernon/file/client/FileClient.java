@@ -33,7 +33,7 @@ public class FileClient {
     private final String METHOD_POST = "POST";
     public boolean debug = false;
     private int timeout = 30 * 1000;
-    private String apiDomain = "up.dianziq.com";// 默认为自动识别接入点
+    private String apiDomain = "localhost:8867";// 默认为自动识别接入点
 
     private String contentMD5 = "";
     private String contentType = "";

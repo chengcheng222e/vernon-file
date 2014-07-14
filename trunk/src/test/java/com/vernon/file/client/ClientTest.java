@@ -16,7 +16,7 @@ public class ClientTest {
     private static final String apiDomain = "localhost:8867/upload";
     protected static final String accessKeyId = "lodawd98232";
     protected static final String secretAccessKey = "2313sd32131231321";
-    private static final String SAMPLE_PIC_FILE = "E:/Picture/psb.jpg";
+    private static final String SAMPLE_PIC_FILE = "/Users/chenyuan/Pictures/myself.jpg";
     private FileClient dzqClient = null;
 
     static {
