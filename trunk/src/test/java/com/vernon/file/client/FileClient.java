@@ -296,7 +296,7 @@ public class FileClient {
             }
             this.responseText = new String(outStream.toByteArray(), "UTF-8");
 
-            Response response = (Response) JsonUtil.json2Object(this.responseText, Response.class);
+            ResponseResult response = (ResponseResult) JsonUtil.json2Object(this.responseText, ResponseResult.class);
             if (response != null) {
                 this.filename = response.getFilename();
                 this.fileExt = response.getFileExt();

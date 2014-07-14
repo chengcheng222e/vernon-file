@@ -7,7 +7,7 @@ package com.vernon.file.client;
  * Time: 下午4:12
  * To change this template use File | Settings | File Templates.
  */
-public class Response {
+public class ResponseResult {
 
     // ------------------------------------------- FIELD NAMES -----------------------------------------
 
@@ -52,7 +52,7 @@ public class Response {
 
     @Override
     public String toString() {
-        return "Response{" +
+        return "ResponseResult{" +
                 "filename='" + filename + '\'' +
                 ", picWidth=" + picWidth +
                 ", picHeight=" + picHeight +

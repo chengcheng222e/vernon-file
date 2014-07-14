@@ -1,5 +1,8 @@
 package com.vernon.file.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +15,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class ClientTest {
-
+    private static Logger logger = LoggerFactory.getLogger(ClientTest.class);
     private static final String apiDomain = "localhost:8867/upload";
     protected static final String accessKeyId = "lodawd98232";
     protected static final String secretAccessKey = "2313sd32131231321";
@@ -22,7 +25,7 @@ public class ClientTest {
     static {
         File picFile = new File(SAMPLE_PIC_FILE);
         if (!picFile.isFile()) {
-            System.out.println("本地待上传的测试文件不存在!");
+            logger.error("file={}, 本地待上传的测试文件不存在!", picFile.getAbsolutePath());
         }
     }
 
@@ -42,15 +45,15 @@ public class ClientTest {
         File file = new File(SAMPLE_PIC_FILE);
         dzqClient.setContentMD5(FileUtil.fileMD5(file));
         dzqClient.setUserId("255511");
-        dzqClient.setObjectType("user");
+        dzqClient.setObjectType(Product.User.getValue());
         dzqClient.setObjectId("25551");
         Map<String, String> params = new HashMap<String, String>();
         boolean isOk = dzqClient.writeFile(file);
         if (isOk) {
-            System.out.println("上传服务器返回文件名：" + dzqClient.getFilename());
-            System.out.println("上传服务器返回json：" + dzqClient.getResponseText());
+            logger.info("上传服务器返回文件名：" + dzqClient.getFilename());
+            logger.info("上传服务器返回json：" + dzqClient.getResponseText());
         }
-        System.out.println("上传 = " + isSuccess(isOk));
+        logger.info("上传 = " + isSuccess(isOk));
     }
 
     private static String isSuccess(boolean result) {

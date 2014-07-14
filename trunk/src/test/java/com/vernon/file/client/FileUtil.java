@@ -1,5 +1,6 @@
 package com.vernon.file.client;
 
+import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import org.apache.commons.codec.binary.Hex;
 
@@ -26,7 +27,6 @@ public class FileUtil {
      * @throws java.security.NoSuchAlgorithmException
      */
     public static String fileMD5(File srcImageFile) throws IOException, NoSuchAlgorithmException {
-        byte[] md5Bytes = Files.getDigest(srcImageFile, MessageDigest.getInstance("MD5"));
-        return new String(Hex.encodeHex(md5Bytes));
+        return Files.hash(srcImageFile, Hashing.md5()).toString();
     }
 }
