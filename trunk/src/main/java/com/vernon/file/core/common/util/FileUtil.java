@@ -1,16 +1,17 @@
 package com.vernon.file.core.common.util;
 
+import com.google.common.base.Splitter;
 import com.vernon.file.core.Config;
 import com.vernon.file.core.Constant;
 import com.vernon.file.core.FileType;
+import com.vernon.file.domain.ImageParam;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,6 +27,21 @@ public class FileUtil {
     private final static Map<String, String> voiceAllowTypes = new HashMap<String, String>();
     private final static Map<String, String> otherAllowTypes = new HashMap<String, String>();
     public final static String SEPARATOR = "/";
+
+    private static Set<String> imageAllowSet = null;
+    private static Set<String> voiceAllowSet = null;
+    private static Set<String> otherAllowSet = null;
+
+    static {
+        String imageAllowTypeStr = Config.INSTANCE.get("imageAllowTypes", "jpg,jpeg,gif,png,bmp");
+        imageAllowSet = getAllowSet(imageAllowTypeStr);
+
+        String voiceAllowTypeStr = Config.INSTANCE.get("voiceAllowTypes", "mp3");
+        voiceAllowSet = getAllowSet(voiceAllowTypeStr);
+
+        String otherAllowTypeStr = Config.INSTANCE.get("otherAllowTypes", "pdf");
+        otherAllowSet = getAllowSet(otherAllowTypeStr);
+    }
 
     static {
         String imageAllowTypeStr = Config.INSTANCE.get("imageAllowTypes", "bmp,jpg,x-png,gif,jpeg,png");
@@ -168,6 +184,49 @@ public class FileUtil {
         String basename = filename.substring(0, dotIndex);
         String ext = filename.substring(dotIndex + 1);
         return FileUtil.getSrcFile(basename, ext);
+    }
+
+    public static Map<String, Object> getFileInfo(String imgPath) {
+        if (StringUtils.isBlank(imgPath)) {
+            return null;
+        }
+        String ext = FilenameUtils.getExtension(imgPath).toLowerCase();
+        Map<String, Object> infoMap = new HashMap<String, Object>();
+        infoMap.put("fileExt", ext.toLowerCase());
+        if (imageAllowSet.contains(ext)) {
+            try {
+                infoMap.put("fileType", "image");
+                String size = Im4javaImgUtil.getWidthAndHeight(imgPath);
+                ImageParam.Size imgSize = ImageParam.getSize(size, true, false);
+                if (imgSize != null) {
+                    infoMap.put("width", imgSize.getWidth());
+                    infoMap.put("height", imgSize.getHeight());
+                } else {
+                    infoMap.put("width", 0);
+                    infoMap.put("height", 0);
+                }
+            } catch (Exception e) {
+                infoMap.put("width", 0);
+                infoMap.put("height", 0);
+                LOGGER.error("获取图片信息异常file=" + imgPath, e);
+            }
+        } else if (voiceAllowSet.contains(ext)) {
+            infoMap.put("fileType", "voice");
+        } else {
+            infoMap.put("fileType", "other");
+        }
+        return infoMap;
+    }
+
+    private static Set<String> getAllowSet(String allowTypeStr) {
+        HashSet<String> allowSet = new HashSet<String>();
+        Iterable<String> imageIt = Splitter.on(",").omitEmptyStrings().trimResults().split(allowTypeStr);
+        Iterator<String> iterator = imageIt.iterator();
+        while (iterator.hasNext()) {
+            String type = iterator.next();
+            allowSet.add(type);
+        }
+        return allowSet;
     }
 }
 

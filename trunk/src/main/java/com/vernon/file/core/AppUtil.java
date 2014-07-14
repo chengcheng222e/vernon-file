@@ -1,14 +1,15 @@
 package com.vernon.file.core;
 
+import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import org.apache.commons.codec.binary.Hex;
+import com.vernon.file.core.common.encrypt.MD5Encrypt;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -19,8 +20,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * To change this template use File | Settings | File Templates.
  */
 public class AppUtil {
-
+    private static Logger logger = LoggerFactory.getLogger(AppUtil.class);
     public static final AtomicInteger operatorIndex = new AtomicInteger(); // 标号
+    private final static String key = "!~@#*&^%$frxf520!";
 
     /**
      * 获取ip地址
@@ -52,16 +54,70 @@ public class AppUtil {
     }
 
     /**
-     * 文件
+     * 校验请求是否合法
      *
-     * @param srcImageFile
+     * @param userId
+     * @param lid
      * @return
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
      */
-    public static String fileMD5(File srcImageFile) throws IOException, NoSuchAlgorithmException {
-        byte[] md5Bytes = Files.getDigest(srcImageFile, MessageDigest.getInstance("MD5"));
-        return new String(Hex.encodeHex(md5Bytes));
+    public static boolean isCanRequest(Integer userId, String lid) {
+        if (StringUtils.isBlank(lid)) {
+            return false;
+        }
+        String[] lidArray = lid.split("-");
+        if (lidArray.length != 2) {
+            return false;
+        }
+        if (lidArray[1].equals(encoder(userId, lidArray[0]))) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 校验请求是否合法
+     *
+     * @param userId
+     * @param lid
+     * @return
+     */
+    public static boolean isCanRequest(String userId, String lid) {
+        return isCanRequest(Integer.parseInt(userId), lid);
+    }
+
+    /**
+     * 加密
+     *
+     * @param userId
+     * @param bootstrapStr
+     * @return
+     */
+    public static String encoder(Integer userId, String bootstrapStr) {
+        return MD5Encrypt.encoderForString(userId + bootstrapStr + key);
+    }
+
+    public static String getSignature(String method, String date,
+                                      String accessKeyId, String uri, String contentType,
+                                      String contentMD5, String uid) {
+        StringBuffer sBuffer = new StringBuffer();
+        final String split = "&";
+        sBuffer.append(method + split);
+        sBuffer.append(uri + split);
+        sBuffer.append(date + split);
+        sBuffer.append(contentType + split);
+        sBuffer.append(contentMD5 + split);
+        sBuffer.append(uid + split);
+        sBuffer.append(AppUtil.getSecretAccessKey(accessKeyId));
+        logger.debug("sign={}", sBuffer.toString());
+        return MD5Encrypt.encoderForString(sBuffer.toString());
+    }
+
+    public static String getSecretAccessKey(String accessKeyId) {
+        return Constant.accessKeyMap.get(accessKeyId);
+    }
+
+    public static String md5(File file) throws IOException {
+        return Files.hash(file, Hashing.md5()).toString();
     }
 
 }
