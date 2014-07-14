@@ -1,5 +1,8 @@
 package com.vernon.file.core;
 
+import com.vernon.file.core.common.http.HttpHeaders;
+import com.vernon.file.core.common.http.HttpHelper;
+import com.vernon.file.core.common.http.HttpParams;
 import org.jboss.netty.channel.Channel;
 
 import java.util.List;
@@ -15,7 +18,6 @@ import java.util.Map;
 public class Context {
 
     // ----------------------------------- field names ----------------------------------------
-
     private Integer userId;
     private Integer operatorId;
     private String path;
@@ -24,7 +26,16 @@ public class Context {
     private String baseName;
     private String ext;
 
-    public Context(){}
+    private String contentMD5;
+    private String contentType;
+    private String date;
+    private String auth;
+    private String lid;
+    private String objectType;
+    private String objectId;
+
+    public Context() {
+    }
 
     public Context(int userId,
                    int operatorId,
@@ -93,6 +104,79 @@ public class Context {
     public void setParams(Map<String, List<String>> params) {
         this.params = params;
     }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
+
+    public String getContentMD5() {
+        return contentMD5;
+    }
+
+    public void setContentMD5(String contentMD5) {
+        this.contentMD5 = contentMD5;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getAuth() {
+        return auth;
+    }
+
+    public void setAuth(String auth) {
+        this.auth = auth;
+    }
+
+    public String getLid() {
+        return lid;
+    }
+
+    public void setLid(String lid) {
+        this.lid = lid;
+    }
+
+    public String getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
     // -------------------------------------- other methods -----------------------------------
 
     /**
@@ -111,13 +195,20 @@ public class Context {
     @Override
     public String toString() {
         return "Context{" +
-                "baseName='" + baseName + '\'' +
-                ", userId=" + userId +
+                "userId=" + userId +
                 ", operatorId=" + operatorId +
                 ", path='" + path + '\'' +
                 ", channel=" + channel +
                 ", params=" + params +
+                ", baseName='" + baseName + '\'' +
                 ", ext='" + ext + '\'' +
-                "} " + super.toString();
+                ", contentMD5='" + contentMD5 + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", date='" + date + '\'' +
+                ", auth='" + auth + '\'' +
+                ", lid='" + lid + '\'' +
+                ", objectType='" + objectType + '\'' +
+                ", objectId='" + objectId + '\'' +
+                '}';
     }
 }

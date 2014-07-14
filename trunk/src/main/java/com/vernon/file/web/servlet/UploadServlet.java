@@ -11,14 +11,12 @@ import com.vernon.file.core.common.http.HttpHelper;
 import com.vernon.file.core.common.http.HttpParams;
 import com.vernon.file.core.common.util.FileUtil;
 import com.vernon.file.core.common.util.Im4javaImgUtil;
+import com.vernon.file.core.common.util.JsonUtil;
 import com.vernon.file.core.common.util.UUIDUtil;
-import com.vernon.file.domain.Metadata;
-import net.sf.json.JSONObject;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.lang.StringUtils;
-import org.im4java.core.IM4JavaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +24,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.security.NoSuchAlgorithmException;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -235,12 +235,12 @@ public class UploadServlet extends HttpServlet {
         }
 
         if (saveOk) {
-            JSONObject jsonObject = new JSONObject();
+            Map<String, Object> map = new HashMap<String, Object>();
             Map<String, Object> infoMap = FileUtil.getFileInfo(toImgPath);
             int picWidth = 0;
             int picHeight = 0;
             if (infoMap != null) {
-                jsonObject.putAll(infoMap);
+                map.putAll(infoMap);
                 if (infoMap.containsKey("width")) {
                     picWidth = (Integer) infoMap.get("width");
                 }
@@ -255,12 +255,11 @@ public class UploadServlet extends HttpServlet {
                 LOGGER.debug("{} 图片名加上宽高,finalImageName={}", requestId, finalImageName);
                 com.google.common.io.Files.move(srcImageFile, finalImageFile);
             }
-
-            jsonObject.put("filename", filename);
+            map.put("filename", filename);
             response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().write(jsonObject.toString());
+            response.getWriter().write(JsonUtil.toJson(map));
         } else {
-            response.sendError(503, "save file error");
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "save file error");
         }
         LOGGER.debug("###requestId = {}, end doPost ...", requestId);
     }

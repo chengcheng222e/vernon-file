@@ -35,10 +35,13 @@ dependencies {
 
     //compile fileTree(dir: 'lib', includes: ['*.jar'])
 
+    // ------------------------------ jackson ------------------------
+    compile 'com.fasterxml.jackson.core:jackson-core:2.2.2'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.2.2'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.2'
+
     compile 'commons-fileupload:commons-fileupload:1.0'
     compile 'commons-io:commons-io:2.4'
-    compile "net.sf.json-lib:json-lib:2.3:jdk13"
-    compile 'net.sf.ezmorph:ezmorph:1.0.6'
     compile 'commons-beanutils:commons-beanutils:1.8.3'
     compile "mysql:mysql-connector-java:5.1.11"
     compile 'commons-dbutils:commons-dbutils:1.5'
