@@ -39,21 +39,23 @@ public class HttpServiceHandler extends SimpleChannelHandler {
 
         final int operatorId = AppUtil.operatorIndex.incrementAndGet();
         LOGGER.info("{} ---------- messageReceived start ------------", operatorId);
-        // ------------------------ 分析 request ------------------------
+
+        // 分析 request
         HttpRequest httpRequest = (HttpRequest) e.getMessage();
         Channel channel = e.getChannel();
         LOGGER.info("1. {}, channelId={}, httpRequest.getUri()={}", operatorId, channel.getId(), httpRequest.getUri());
+
         // 获取查询条件
         QueryStringDecoder queryStringDecoder = new QueryStringDecoder(httpRequest.getUri(), UTF8);
         String path = URLDecoder.decode(queryStringDecoder.getPath(), "utf-8");
         LOGGER.debug("2. URLDecoder path={} ", path);
+
         // get 请求参数
         Map<String, List<String>> params = queryStringDecoder.getParameters();
         String baseName = FilenameUtils.getBaseName(path);
         String ext = FilenameUtils.getExtension(path);
         FileType fileType = FileUtil.getFileType(ext);
-        int userId = 11241;
-        Context context = new Context(userId, operatorId, path, params, baseName, ext, channel);
+        Context context = new Context(channel, params, baseName, ext, path);
         Action cmd = ActionFactory.getAction(fileType);
         cmd.handle(context);
         LOGGER.info("{} ---------- messageReceived end ------------", operatorId);
