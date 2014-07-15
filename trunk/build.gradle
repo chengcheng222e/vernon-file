@@ -5,15 +5,15 @@ apply plugin: 'jetty'
 apply plugin: 'idea'
 
 compileJava.options.encoding = 'UTF-8'
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-group = 'com.dianziq.fileserver'
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+group = 'com.vernon.file'
 version = "1.0"
 
-jar.baseName = 'fileserver'
+jar.baseName = 'file'
 
 // gradle war -Denv=local
-def env = System.getProperty("env")?:"local"
+def env = System.getProperty("env") ?: "local"
 
 //jettyRun.contextPath = '/'
 //jettyRun.httpPort = 8861
@@ -65,13 +65,13 @@ sourceSets {
     main {
         resources {
             exclude 'src/main/resources'
-            srcDirs = ["src/main/resources/public","src/main/resources/$env"]
+            srcDirs = ["src/main/resources/public", "src/main/resources/$env"]
         }
     }
 }
 
 task(runMsgServer, dependsOn: 'classes', type: JavaExec) {
-    main = 'com.dianziq.fileserver.Main'
+    main = 'com.vernon.file.Main'
     classpath = sourceSets.main.runtimeClasspath
 }
 
