@@ -6,7 +6,7 @@ vernon-webspider
 
 项目介绍:
 ---------------
-        开发环境: Mac 10.9
+        开发环境: Mac  10.9
         开发工具: IntelliJ IDEA 12, 一个很好的 Java 开发工具
         Jar 托管: gradle 1.6 现在最新的是 gradle 1.9
         JDK: 1.7
